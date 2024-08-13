@@ -24,5 +24,4 @@ config.yaml
 .env
 
 # folders to ignore
-node_modules
 tmp
