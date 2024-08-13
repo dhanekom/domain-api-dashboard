@@ -22,3 +22,7 @@ go.work
 go.work.sum
 config.yaml
 .env
+
+# folders to ignore
+node_modules
+tmp
