@@ -80,7 +80,7 @@ func main() {
 }
 
 func (r *HandlerRepo) DashboardHandler(c echo.Context) error {
-	return c.Render(200, "dashboard", nil)
+	return c.Render(200, "dashboard.html", nil)
 }
 
 func (r *HandlerRepo) DashboardSearchResultsHandler(c echo.Context) error {

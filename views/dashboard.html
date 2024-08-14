@@ -1,26 +1,17 @@
-{{ block "dashboard" . }}
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/public/css/styles.css">
-  <script src="/public/javascript/htmx.min.js"></script>
-  <title>Domain-API Dashboard</title>
-</head>
-<body class="bg-gray-100 text-gray-900">
-  <div class="">
-    <div class="m-auto w-full">
-      <nav class="bg-white flex flex-row items-center">
-        <div id="logo" class="p-4">
-          <img src="/public/img/xneelo-log.webp" alt="" class="w-full object-cover">
-        </div>
-      </nav>
-    </div>
+{{ template "base" . }}
 
+{{ define "page-title"}}Domain-API Dashboard{{ end }}
+
+{{ define "content" }}
     <main class="max-w-screen-lg mx-auto">
       <div class="m-4">
         <div class="flex items-center">
           <label class="w-1/6 text-right" for="search">Search:</label>
+          <!-- <select name="search-by" id="search-id">
+            <option value="domain">Domain Name</option>
+            <option value="account">Account No</option>
+            <option value="client">Client No</option>
+          </select> -->
           <input
             type="search"
             id="search"
@@ -67,28 +58,25 @@
         </div>
       </div>
     </main>
-  </div>
 
-  <script>
-    document.body.addEventListener('htmx:beforeRequest', function(evt){
-      const search = document.getElementById("search");
-      const searchResults = document.getElementById("search-results");
-      if (searchResults) {
-        searchResults.innerHTML = "";
-      }
+    <script>
+      document.body.addEventListener('htmx:beforeRequest', function(evt){
+        const search = document.getElementById("search");
+        const searchResults = document.getElementById("search-results");
+        if (searchResults) {
+          searchResults.innerHTML = "";
+        }
+  
+        if (search.value.length < 3) {
+          // evt.preventDefault() cancels the request
+          evt.preventDefault();
+          return
+        }
+      });
+    </script>
+ {{ end }}
 
-      if (search.value.length < 3) {
-        // evt.preventDefault() cancels the request
-        evt.preventDefault();
-        return
-      }
-    });
-  </script>
-</body>
-</html>
-{{ end }}
-
-{{ block "dashboard-search-result" .}}
+ {{ block "dashboard-search-result" .}}
   {{ range .Domains }}
   <tr class="bg-white border-b">
     <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
