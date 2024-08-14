@@ -5,24 +5,27 @@
 {{ define "content" }}
     <main class="max-w-screen-lg mx-auto">
       <div class="m-4">
-        <div class="flex items-center">
+        <form 
+          class="flex items-center"
+          hx-post="/search"  
+          hx-target="#search-results"
+          hx-indicator="#loading"
+        >
           <label class="w-1/6 text-right" for="search">Search:</label>
-          <!-- <select name="search-by" id="search-id">
+          <select name="search-by" id="search-id"
+            class="ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" 
+          >
             <option value="domain">Domain Name</option>
             <option value="account">Account No</option>
             <option value="client">Client No</option>
-          </select> -->
+          </select>
           <input
             type="search"
             id="search"
             name="search"
-            class="w-4/6 pr-4 w-full ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500" placeholder="Enter Domain name (min 3 character required)..."
-            hx-post="/search"  
-            hx-target="#search-results"
-            hx-trigger="input changed delay:500ms, search"
-            hx-indicator="#loading"
+            class="pr-4 w-full ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500" placeholder="Enter Domain name (min 3 character required)..."
           >
-        </div>
+        </form>
   
         <div class="relative overflow-x-auto rounded mt-4">
             <table class="w-full text-sm text-left rtl:text-right">

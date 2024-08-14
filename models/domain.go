@@ -23,6 +23,17 @@ func DomainSearchByColumn(searchByType DomainSearchByType) string {
 	}
 }
 
+func DomainSearchByTypeFromCode(code string) DomainSearchByType {
+	switch code {
+	case "account":
+		return DomainSearchByAccountNo
+	case "client":
+		return DomainSearchByClientNo
+	default:
+		return DomainSearchByDomainName
+	}
+}
+
 var DomainActiveStatusses []string = []string{"Ready", "Termination Period"}
 
 type Domain struct {

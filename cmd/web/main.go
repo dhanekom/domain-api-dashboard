@@ -87,19 +87,11 @@ func (r *HandlerRepo) DashboardSearchResultsHandler(c echo.Context) error {
 	data := newDashboardData()
 
 	searchValue := c.FormValue("search")
-	// if strings.Trim(searchValue, " ") == "" {
-	// 	return c.Render(200, "dashboard-search-result", data)
-	// }
-
-	// domains := []models.Domain{
-	// 	{DomainName: "virtua.co.za", AccountNo: "A0100591103", ClientNo: "C0100405403", BillForReg: false, Status: "Ready"},
-	// 	{DomainName: "moneyforyou.co.za", AccountNo: "C0301767006", ClientNo: "A0100591303", BillForReg: false, Status: "Ready"},
-	// 	{DomainName: "computerknights.co.za", AccountNo: "A0100592203", ClientNo: "C0100406203", BillForReg: false, Status: "Ready"},
-	// 	{DomainName: "lexi.co.za", AccountNo: "A0100592203", ClientNo: "C0100406203", BillForReg: false, Status: "Deleted"},
-	// }
+	searchByCode := c.FormValue("search-by")
+	searchByType := models.DomainSearchByTypeFromCode(searchByCode)
 
 	var err error
-	data.Domains, err = r.db.GetDomains(context.Background(), models.DomainSearchByDomainName, searchValue)
+	data.Domains, err = r.db.GetDomains(context.Background(), searchByType, searchValue)
 	if err != nil {
 		return err
 	}

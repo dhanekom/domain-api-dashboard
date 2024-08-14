@@ -607,8 +607,8 @@ video {
   width: 16.666667%;
 }
 
-.w-5\/6 {
-  width: 83.333333%;
+.w-4\/6 {
+  width: 66.666667%;
 }
 
 .w-full {
@@ -721,6 +721,10 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
 }
 
 .text-left {
