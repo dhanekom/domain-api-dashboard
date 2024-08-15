@@ -29,7 +29,7 @@ func (r *MysqlDBRepo) GetDomains(ctx context.Context, searchBy models.DomainSear
 	defer cancel()
 
 	result := []models.Domain{}
-	sql := fmt.Sprintf(DomainsGetSQL, models.DomainSearchByColumn(searchBy), "%"+searchStr+"%")
+	sql := fmt.Sprintf(DomainsGetSQL, models.DomainSearchByColumn(searchBy), searchStr+"%")
 
 	err := r.db.SelectContext(ctxInner, &result, sql)
 	if err != nil {

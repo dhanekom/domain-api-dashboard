@@ -554,10 +554,6 @@ video {
   --tw-contain-style:  ;
 }
 
-.fixed {
-  position: fixed;
-}
-
 .relative {
   position: relative;
 }
@@ -621,10 +617,6 @@ video {
 
 .w-1\/6 {
   width: 16.666667%;
-}
-
-.w-4\/6 {
-  width: 66.666667%;
 }
 
 .w-full {
