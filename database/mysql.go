@@ -17,7 +17,8 @@ const (
        if(d.Bill_For_Registration = 'Yes', true, false) Bill_For_Registration,
        d.Status
 from Domain d
-where %s like '%s';`
+where %s like '%s'
+order by d.Domain_Name;`
 )
 
 type MysqlDBRepo struct {
