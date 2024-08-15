@@ -1,53 +1,12 @@
 package main
 
 import (
-	"context"
-	"html/template"
-	"io"
 	"log"
 	"os"
-	"sort"
 
 	"github.com/joho/godotenv"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"gitlab.host-h.net/skunkworks/domain-api-dashboard/database"
-	"gitlab.host-h.net/skunkworks/domain-api-dashboard/models"
 )
-
-type Templates struct {
-	templates *template.Template
-}
-
-func (t *Templates) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
-
-func newTemplate() *Templates {
-	return &Templates{
-		templates: template.Must(template.ParseGlob("views/*.html")),
-	}
-}
-
-type DashboardData struct {
-	Domains []models.Domain
-}
-
-func newDashboardData() *DashboardData {
-	return &DashboardData{
-		Domains: []models.Domain{},
-	}
-}
-
-type HandlerRepo struct {
-	db database.DBRepo
-}
-
-func newHandlerRepo(db database.DBRepo) *HandlerRepo {
-	return &HandlerRepo{
-		db: db,
-	}
-}
 
 func main() {
 	err := godotenv.Load()
@@ -66,43 +25,7 @@ func main() {
 
 	handlerRepo := newHandlerRepo(dbRepo)
 
-	e := echo.New()
+	router := routes(handlerRepo)
 
-	e.Static("/public", "public")
-	e.Use(middleware.Logger())
-
-	e.Renderer = newTemplate()
-
-	e.GET("/", handlerRepo.DashboardHandler)
-	e.POST("/search", handlerRepo.DashboardSearchResultsHandler)
-
-	e.Logger.Fatal(e.Start("127.0.0.1:42069"))
-}
-
-func (r *HandlerRepo) DashboardHandler(c echo.Context) error {
-	return c.Render(200, "dashboard.html", nil)
-}
-
-func (r *HandlerRepo) DashboardSearchResultsHandler(c echo.Context) error {
-	data := newDashboardData()
-
-	searchValue := c.FormValue("search")
-	searchByCode := c.FormValue("search-by")
-	searchByType := models.DomainSearchByTypeFromCode(searchByCode)
-
-	var err error
-	data.Domains, err = r.db.GetDomains(context.Background(), searchByType, searchValue)
-	if err != nil {
-		return err
-	}
-
-	sort.Slice(data.Domains, func(i, j int) bool {
-		return data.Domains[i].DomainName < data.Domains[j].DomainName
-	})
-
-	// data.Domains = filter[models.Domain](domains, func(d models.Domain) bool {
-	// 	return strings.HasPrefix(d.DomainName, searchValue)
-	// })
-
-	return c.Render(200, "dashboard-search-result", data)
+	router.Logger.Fatal(router.Start("127.0.0.1:42069"))
 }

@@ -4,6 +4,8 @@ import (
 	"slices"
 )
 
+var DomainActiveStatusses []string = []string{"Ready", "Termination Period"}
+
 type DomainSearchByType int
 
 const (
@@ -11,6 +13,26 @@ const (
 	DomainSearchByAccountNo
 	DomainSearchByClientNo
 )
+
+type DashboardData struct {
+	Domains []Domain
+}
+
+type Domain struct {
+	ID           int    `db:"ID"`
+	DomainNumber string `db:"Domain_Number"`
+	DomainName   string `db:"Domain_Name"`
+	AccountNo    string `db:"Account_Number"`
+	ClientNo     string `db:"Client_Number"`
+	BillForReg   bool   `db:"Bill_For_Registration"`
+	Status       string `db:"Status"`
+}
+
+func NewDashboardData() *DashboardData {
+	return &DashboardData{
+		Domains: []Domain{},
+	}
+}
 
 func DomainSearchByColumn(searchByType DomainSearchByType) string {
 	switch searchByType {
@@ -32,18 +54,6 @@ func DomainSearchByTypeFromCode(code string) DomainSearchByType {
 	default:
 		return DomainSearchByDomainName
 	}
-}
-
-var DomainActiveStatusses []string = []string{"Ready", "Termination Period"}
-
-type Domain struct {
-	ID           int    `db:"ID"`
-	DomainNumber string `db:"Domain_Number"`
-	DomainName   string `db:"Domain_Name"`
-	AccountNo    string `db:"Account_Number"`
-	ClientNo     string `db:"Client_Number"`
-	BillForReg   bool   `db:"Bill_For_Registration"`
-	Status       string `db:"Status"`
 }
 
 func (d *Domain) Active() bool {

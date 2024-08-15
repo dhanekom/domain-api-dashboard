@@ -3,9 +3,7 @@
 {{ define "page-title"}}Domain-API Dashboard{{ end }}
 
 {{ define "content" }}
-    <main 
-      class="max-w-screen-lg mx-auto relative"
-    >
+    <main class="max-w-screen-lg mx-auto relative" x-data>
       <div class="m-4">
         <form
           id="dashboard-form"
@@ -28,6 +26,7 @@
             hx-target="#search-results"
             hx-indicator="#loading"
             hx-trigger="input changed delay:500ms, search"
+            @htmx:after-request="console.log('got here')"
           >
         </form>
   
