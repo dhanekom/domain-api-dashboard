@@ -27,7 +27,6 @@
             hx-target="#search-results"
             hx-indicator="#loading"
             hx-trigger="input changed delay:500ms, search"
-            @htmx:after-request="console.log('got here')"
           >
         </form>
   
@@ -60,7 +59,7 @@
                 </tbody>
             </table>
             <span id="loading" class="htmx-indicator">
-              <img src="/public/img/loading.gif" alt="loading..." class="mt-2 m-auto h-10">
+              <img src="/public/img/loading.gif" alt="loading..." class="mt-2 m-auto h-10 w-10">
             </span>
         </div>
       </div>
@@ -68,12 +67,6 @@
 
     <script>
       document.body.addEventListener('htmx:beforeRequest', function(evt){
-        const search = document.getElementById("search");
-        const searchResults = document.getElementById("search-results");
-        if (searchResults) {
-          searchResults.innerHTML = "";
-        }
-  
         if (search.value.length < 3) {
           // evt.preventDefault() cancels the request
           evt.preventDefault();

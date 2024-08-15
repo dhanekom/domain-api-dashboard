@@ -1,27 +1,72 @@
 {{ define "base"}}
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/public/css/notie.min.css">
   <link rel="stylesheet" href="/public/css/styles.css">
   <script src="/public/javascript/htmx.min.js"></script>
   <script defer src="/public/javascript/alpine.min.js"></script>
   <title>{{ template "page-title" }}</title>
 </head>
 <body class="bg-gray-100 text-gray-900">
-  <div class="">
-    <header class="m-auto bg-white sticky top-0 w-full shadow-md z-50">
-      <nav class="bg-white flex flex-row items-center">
-        <div id="logo" class="p-4">
-          <img src="/public/img/xneelo-log.webp" alt="" class="w-full object-cover">
-        </div>
-      </nav>
-    </header>
+  <header class="m-auto bg-white sticky top-0 w-full shadow-md z-5">
+    <nav class="bg-white flex flex-row items-center">
+      <div id="logo" class="p-4">
+        <img src="/public/img/xneelo-log.webp" alt="" class="w-full object-cover">
+      </div>
+    </nav>
+  </header>
 
-    {{block "content" .}}
+  {{block "content" .}}
 
-    {{end}}
-  </div>
+  {{end}}
+
+  <script src="/public/javascript/notie.min.js"></script>
+  <script>
+    document.body.addEventListener('htmx:afterRequest', function(evt) {
+      if(evt.detail.xhr.status === 404){
+        notify_error('404 - Could not find resource')
+      } else if (evt.detail.xhr.status === 422) {
+        notify_error(evt.detail.xhr.response);
+      } else if (evt.detail.xhr.status === 400 || evt.detail.xhr.status >= 500) {
+        notify_error('An unpected error occurred')
+      }
+    });
+
+    function notify(msg, msgType) {
+      notie.alert({
+        type: msgType,
+        text: msg,
+      });
+    }
+
+    function notify_success(msg) {
+      notie.alert({
+        type: 'success',
+        text: msg,
+      });
+    }
+
+    function notify_error(msg) {
+      notie.alert({
+        type: 'error',
+        text: msg,
+      });
+    }
+
+    function notify_warning(msg) {
+      notie.alert({
+        type: 'warning',
+        text: msg,
+      });
+    }
+  </script>
 </body>
 </html>
+{{ end }}
+
+{{ block "notification" .}}
+<div>{{ .Message }}</div>
 {{ end }}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"gitlab.host-h.net/skunkworks/domain-api-dashboard/internal/database"
@@ -25,7 +26,12 @@ func (r *HandlerRepo) DashboardHandler(c echo.Context) error {
 func (r *HandlerRepo) DashboardSearchResultsHandler(c echo.Context) error {
 	data := models.NewDashboardData()
 
-	searchValue := c.FormValue("search")
+	searchValue := strings.Trim(c.FormValue("search"), " ")
+
+	if len(searchValue) < 3 {
+		return c.Render(422, "notification", models.Notification{Message: "A valid search value is required"})
+	}
+
 	searchByCode := c.FormValue("search-by")
 	searchByType := models.DomainSearchByTypeFromCode(searchByCode)
 
