@@ -4,7 +4,7 @@ import (
 	"slices"
 )
 
-var DomainActiveStatusses []string = []string{"Ready", "Termination Period"}
+var DomainActiveStatusses []string = []string{"Ready", "Termination Period", "Dedicated"}
 
 type DomainSearchByType int
 
