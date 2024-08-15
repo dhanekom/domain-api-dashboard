@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/labstack/echo/v4"
-	"gitlab.host-h.net/skunkworks/domain-api-dashboard/database"
-	"gitlab.host-h.net/skunkworks/domain-api-dashboard/models"
+	"gitlab.host-h.net/skunkworks/domain-api-dashboard/internal/database"
+	"gitlab.host-h.net/skunkworks/domain-api-dashboard/internal/models"
 )
 
 type HandlerRepo struct {

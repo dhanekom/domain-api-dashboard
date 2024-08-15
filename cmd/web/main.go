@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"gitlab.host-h.net/skunkworks/domain-api-dashboard/database"
+	"gitlab.host-h.net/skunkworks/domain-api-dashboard/internal/database"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-package main
+package utils
 
 func filter[T any](values []T, test func(T) bool) []T {
 	var result []T

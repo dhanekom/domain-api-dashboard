@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
-	"gitlab.host-h.net/skunkworks/domain-api-dashboard/models"
+	"gitlab.host-h.net/skunkworks/domain-api-dashboard/internal/models"
 )
 
 const (
