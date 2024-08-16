@@ -10,7 +10,7 @@
   <script defer src="/public/javascript/alpine.min.js"></script>
   <title>{{ template "page-title" }}</title>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-100 text-gray-900 -z-10">
   <header class="m-auto bg-white sticky top-0 w-full shadow-md z-5">
     <nav class="bg-white flex flex-row items-center">
       <div id="logo" class="p-4">
@@ -43,24 +43,15 @@
     }
 
     function notify_success(msg) {
-      notie.alert({
-        type: 'success',
-        text: msg,
-      });
+      notify('success', msg);
     }
 
     function notify_error(msg) {
-      notie.alert({
-        type: 'error',
-        text: msg,
-      });
+      notify('error', msg);
     }
 
     function notify_warning(msg) {
-      notie.alert({
-        type: 'warning',
-        text: msg,
-      });
+      notify('warning', msg);
     }
   </script>
 </body>

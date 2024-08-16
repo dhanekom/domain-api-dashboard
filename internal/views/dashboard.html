@@ -3,7 +3,7 @@
 {{ define "page-title"}}Domain-API Dashboard{{ end }}
 
 {{ define "content" }}
-    <main class="max-w-screen-lg mx-auto relative" x-data>
+    <main class="max-w-screen-lg mx-auto relative z-4" x-data>
       <div class="m-4">
         <form
           id="dashboard-form"
@@ -23,6 +23,7 @@
             name="search"
             class="pr-4 w-full ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
             placeholder="Enter search value (min 3 character required)..."
+            autocomplete="off"
             hx-post="/search"  
             hx-target="#search-results"
             hx-indicator="#loading"
@@ -67,6 +68,12 @@
 
     <script>
       document.body.addEventListener('htmx:beforeRequest', function(evt){
+        const search = document.getElementById("search");
+        const searchResults = document.getElementById("search-results");
+        if (searchResults) {
+          searchResults.innerHTML = "";
+        }
+
         if (search.value.length < 3) {
           // evt.preventDefault() cancels the request
           evt.preventDefault();
