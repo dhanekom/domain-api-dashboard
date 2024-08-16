@@ -3,15 +3,20 @@
 {{ define "page-title"}}Domain-API Dashboard{{ end }}
 
 {{ define "content" }}
-    <main class="max-w-screen-lg mx-auto relative z-4" x-data>
+    <main
+      class="max-w-screen-lg mx-auto relative z-4"
+      x-data="{
+        resultCount: 0
+      }"
+    >
       <div class="m-4">
         <form
           id="dashboard-form"
           class="flex items-center"
         >
-          <label class="w-1/6 text-right" for="search">Search:</label>
+          <label class="w-2/12 text-right" for="search">Search:</label>
           <select name="search-by" id="search-id"
-            class="ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50" 
+            class="w-3/12 ml-2 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50" 
           >
             <option value="domain">Domain Name</option>
             <option value="account">Account No</option>
@@ -21,18 +26,32 @@
             type="search"
             id="search"
             name="search"
-            class="pr-4 w-full ml-2 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
+            class="pr-4 w-full ml-2 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
             placeholder="Enter search value (min 3 character required)..."
             autocomplete="off"
             hx-post="/search"  
             hx-target="#search-results"
             hx-indicator="#loading"
             hx-trigger="input changed delay:500ms, search"
+            @htmx:before-request="
+              resultCount = 0
+              const search = document.getElementById('search');
+              const searchResults = document.getElementById('search-results');
+              if (searchResults) {
+                searchResults.innerHTML = '';
+              }
+      
+              if (search.value.length < 3) {
+                $event.preventDefault();
+                return
+              }"
+            @htmx:after-request="resultCount = document.querySelector('#search-table tbody').rows.length"
           >
+          <div class="w-3/12 px-2">Records: <span x-text="resultCount"></span></div>
         </form>
   
         <div class="relative overflow-x-auto rounded mt-4">
-            <table class="w-full text-sm text-left rtl:text-right">
+            <table id="search-table" class="w-full text-sm text-left rtl:text-right">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -67,19 +86,19 @@
     </main>
 
     <script>
-      document.body.addEventListener('htmx:beforeRequest', function(evt){
-        const search = document.getElementById("search");
-        const searchResults = document.getElementById("search-results");
-        if (searchResults) {
-          searchResults.innerHTML = "";
-        }
+      // document.body.addEventListener('htmx:beforeRequest', function(evt){
+      //   const search = document.getElementById("search");
+      //   const searchResults = document.getElementById("search-results");
+      //   if (searchResults) {
+      //     searchResults.innerHTML = "";
+      //   }
 
-        if (search.value.length < 3) {
-          // evt.preventDefault() cancels the request
-          evt.preventDefault();
-          return
-        }
-      });
+      //   if (search.value.length < 3) {
+      //     console.log('preventDefault()')
+      //     evt.preventDefault();
+      //     return
+      //   }
+      // });
 
       const form = document.getElementById("dashboard-form");
       if (form) {
@@ -88,9 +107,9 @@
         })
       }
     </script>
- {{ end }}
+{{ end }}
 
- {{ block "dashboard-search-result" .}}
+{{ block "dashboard-search-result" .}}
   {{ range .Domains }}
   <tr class="bg-white border-b">
     <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
